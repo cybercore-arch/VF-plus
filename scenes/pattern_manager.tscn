@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://7mc4qvx84sxh"]
+
+[ext_resource type="Script" uid="uid://dogbs70sp0vn0" path="res://scripts/pattern_manager.gd" id="1_oplue"]
+[ext_resource type="Script" uid="uid://dyl10il42w2hy" path="res://scripts/attacks/aimed.gd" id="3_g06hp"]
+[ext_resource type="Script" uid="uid://bblshfdk74hjc" path="res://scripts/attacks/circle.gd" id="3_xtwlk"]
+[ext_resource type="Script" uid="uid://c0jj86224tyre" path="res://scripts/attacks/spiral.gd" id="4_xtwlk"]
+[ext_resource type="Script" uid="uid://8yxwcp5vuh21" path="res://scripts/attacks/rain.gd" id="5_j7s00"]
+[ext_resource type="Script" uid="uid://bogb2jnt1c48q" path="res://scripts/attacks/minefield.gd" id="6_1qmgk"]
+[ext_resource type="Script" uid="uid://c20ddk0gtlikg" path="res://scripts/attacks/random.gd" id="7_fs4w3"]
+[ext_resource type="Script" uid="uid://ddlusxf26x4jr" path="res://scripts/loop.gd" id="8_qpiio"]
+[ext_resource type="Script" uid="uid://bwq08i765i0o4" path="res://scripts/attacks/aimed_laser.gd" id="9_dmmcr"]
+[ext_resource type="Script" uid="uid://dp6q6lb4dmr5b" path="res://scripts/attacks/laser_grid.gd" id="10_pbpbt"]
+
+[node name="pattern_manager" type="Node" unique_id=2064224334]
+script = ExtResource("1_oplue")
+
+[node name="aimed" type="Node" parent="." unique_id=896312973]
+script = ExtResource("3_g06hp")
+
+[node name="circle" type="Node" parent="." unique_id=1191521945]
+script = ExtResource("3_xtwlk")
+
+[node name="spiral" type="Node" parent="." unique_id=1400299945]
+script = ExtResource("4_xtwlk")
+
+[node name="rain" type="Node" parent="." unique_id=1847428191]
+script = ExtResource("5_j7s00")
+
+[node name="minefield" type="Node" parent="." unique_id=639680035]
+script = ExtResource("6_1qmgk")
+
+[node name="random" type="Node" parent="." unique_id=370749236]
+script = ExtResource("7_fs4w3")
+
+[node name="loop" type="Node" parent="." unique_id=326633019]
+script = ExtResource("8_qpiio")
+
+[node name="aimed_laser" type="Node" parent="." unique_id=182434924]
+script = ExtResource("9_dmmcr")
+
+[node name="laser_grid" type="Node" parent="." unique_id=1421155407]
+script = ExtResource("10_pbpbt")

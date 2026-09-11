@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://drnv7rmu37qjh"]
+
+[ext_resource type="Script" uid="uid://degnnjurlk11r" path="res://scripts/laser.gd" id="1_laser"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_1"]
+
+[node name="Laser" type="Node2D" unique_id=1712359661]
+script = ExtResource("1_laser")
+
+[node name="VisualLine" type="Line2D" parent="." unique_id=944595349]
+antialiased = true
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1146939429]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=463903687]
+shape = SubResource("SegmentShape2D_1")
+disabled = true

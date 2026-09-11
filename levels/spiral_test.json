@@ -1,0 +1,15 @@
+[
+  {
+	"time": 0.0,
+	"type": "loop",
+	"attack": "spiral",
+	"delay": 0.1,
+	"loop_duration": -1.0,
+	"spawn_x": "random",
+	"spawn_y": "random",
+	"speed": 250.0,
+	"duration": 2.0,
+	"step_delay": 0.06,
+	"angle_step": 15.0
+  }
+]

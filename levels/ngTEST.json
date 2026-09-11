@@ -1,0 +1,86 @@
+[
+  {
+	"time": 0.1,
+	"type": "music",
+	"action": "play",
+	"id": 684300,
+	"volume_db": -2.0
+  },
+  {
+	"time": 1.0,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 12,
+	"speed": 160.0
+  },
+  {
+	"time": 3.5,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 16,
+	"speed": 190.0
+  },
+  {
+	"time": 6.0,
+	"type": "loop",
+	"attack": "aimed",
+	"delay": 0.4,
+	"loop_duration": 4.0,
+	"start_x": "random",
+	"start_y": 0.0,
+	"speed": 340.0
+  },
+  {
+	"time": 10.5,
+	"type": "diagonal_laser",
+	"mode": "cross",
+	"count": 2,
+	"spacing": 240.0,
+	"warn_duration": 0.8,
+	"laser_duration": 2.0,
+	"width": 6.5
+  },
+  {
+	"time": 13.0,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 260.0,
+	"count": 16,
+	"step_delay": 0.16,
+	"angle_step": 22.5,
+	"warn_duration": 0.55,
+	"laser_duration": 0.35,
+	"clockwise": true,
+	"width": 7.0
+  },
+  {
+	"time": 17.5,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 240.0,
+	"count": 18,
+	"step_delay": 0.14,
+	"angle_step": 20.0,
+	"warn_duration": 0.5,
+	"laser_duration": 0.35,
+	"clockwise": false,
+	"width": 7.5
+  },
+  {
+	"time": 21.0,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 24,
+	"speed": 220.0
+  },
+  {
+	"time": 23.5,
+	"type": "end",
+	"delay": 1.5
+  }
+]

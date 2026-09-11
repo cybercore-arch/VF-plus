@@ -1,0 +1,96 @@
+[
+  {
+	"time": 0.5,
+	"type": "eol_swords",
+	"origin_x": "center",
+	"origin_y": 70.0,
+	"count": 30,
+	"spawn_interval": 0.01,
+	"track_duration": 0.30,
+	"freeze_delay": 0.60,
+	"laser_duration": 0.3,
+	"width": 6.5
+  },
+  {
+	"time": 3.8,
+	"type": "eol_swords",
+	"origin_x": 140.0,
+	"origin_y": 90.0,
+	"count": 16,
+	"spawn_interval": 0.10,
+	"track_duration": 0.30,
+	"freeze_delay": 0.18,
+	"laser_duration": 0.45,
+	"width": 7.0
+  },
+  {
+	"time": 7.0,
+	"type": "eol_swords",
+	"origin_x": 1012.0,
+	"origin_y": 90.0,
+	"count": 16,
+	"spawn_interval": 0.10,
+	"track_duration": 0.30,
+	"freeze_delay": 0.18,
+	"laser_duration": 0.45,
+	"width": 7.0
+  },
+  {
+	"time": 10.5,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 14,
+	"speed": 170.0
+  },
+  {
+	"time": 12.0,
+	"type": "eol_swords",
+	"origin_x": "center",
+	"origin_y": "center",
+	"count": 20,
+	"spawn_interval": 0.09,
+	"track_duration": 0.25,
+	"freeze_delay": 0.16,
+	"laser_duration": 0.40,
+	"width": 7.5
+  },
+  {
+	"time": 16.0,
+	"type": "laser_grid",
+	"cols": 5,
+	"rows": 3,
+	"fit_screen": true,
+	"safe_col": "random",
+	"warn_duration": 1.0,
+	"laser_duration": 2.2,
+	"width": 5.5
+  },
+  {
+	"time": 19.5,
+	"type": "eol_swords",
+	"origin_x": "center",
+	"origin_y": 70.0,
+	"count": 22,
+	"spawn_interval": 0.08,
+	"track_duration": 0.22,
+	"freeze_delay": 0.15,
+	"laser_duration": 0.40,
+	"width": 8.0
+  },
+  {
+	"time": 23.5,
+	"type": "loop",
+	"attack": "eol_swords",
+	"delay": 2.5,
+	"loop_duration": -1.0,
+	"origin_x": "random",
+	"origin_y": 80.0,
+	"count": 18,
+	"spawn_interval": 0.09,
+	"track_duration": 0.25,
+	"freeze_delay": 0.18,
+	"laser_duration": 0.45,
+	"width": 7.0
+  }
+]

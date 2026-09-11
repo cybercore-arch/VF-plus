@@ -1,0 +1,15 @@
+[
+  {
+	"time": 0.1,
+	"type": "music",
+	"action": "play",
+	"id": 684300,
+	"volume_db": -2.0
+  },
+  {
+	"time": 1.0,
+	"type": "random",
+	"delay": 1.0,
+	"duration": -1.0
+  }
+]

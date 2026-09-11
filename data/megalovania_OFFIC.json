@@ -1,0 +1,138 @@
+[
+  {
+	"time": 0.05,
+	"type": "music",
+	"action": "play",
+	"id": -1
+  },
+  {
+	"time": 0.5,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 280.0,
+	"count": 14,
+	"step_delay": 0.22,
+	"angle_step": 24.0,
+	"warn_duration": 0.65,
+	"laser_duration": 0.4,
+	"clockwise": true,
+	"width": 6.0
+  },
+  {
+	"time": 4.2,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 280.0,
+	"count": 14,
+	"step_delay": 0.20,
+	"angle_step": 24.0,
+	"warn_duration": 0.60,
+	"laser_duration": 0.4,
+	"clockwise": false,
+	"width": 6.5
+  },
+  {
+	"time": 8.0,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 14,
+	"speed": 180.0
+  },
+  {
+	"time": 9.5,
+	"type": "loop",
+	"attack": "aimed",
+	"delay": 0.45,
+	"loop_duration": 3.0,
+	"start_x": "random",
+	"start_y": 0.0,
+	"speed": 320.0
+  },
+  {
+	"time": 13.0,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 16,
+	"speed": 210.0
+  },
+  {
+	"time": 14.5,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 260.0,
+	"count": 20,
+	"step_delay": 0.16,
+	"angle_step": 20.0,
+	"warn_duration": 0.55,
+	"laser_duration": 0.38,
+	"clockwise": true,
+	"width": 7.0
+  },
+  {
+	"time": 18.5,
+	"type": "diagonal_laser",
+	"mode": "cross",
+	"count": 2,
+	"spacing": 260.0,
+	"warn_duration": 0.9,
+	"laser_duration": 2.2,
+	"width": 6.5
+  },
+  {
+	"time": 20.5,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 240.0,
+	"count": 22,
+	"step_delay": 0.14,
+	"angle_step": 18.0,
+	"warn_duration": 0.5,
+	"laser_duration": 0.35,
+	"clockwise": false,
+	"width": 7.5
+  },
+  {
+	"time": 24.5,
+	"type": "laser_grid",
+	"cols": 5,
+	"rows": 3,
+	"fit_screen": true,
+	"safe_col": "random",
+	"warn_duration": 1.1,
+	"laser_duration": 2.4,
+	"width": 6.0
+  },
+  {
+	"time": 26.5,
+	"type": "sans_carousel",
+	"center_x": "center",
+	"center_y": "center",
+	"radius": 220.0,
+	"count": 28,
+	"step_delay": 0.11,
+	"angle_step": 16.0,
+	"warn_duration": 0.45,
+	"laser_duration": 0.32,
+	"clockwise": true,
+	"width": 8.0
+  },
+  {
+	"time": 30.5,
+	"type": "circle",
+	"spawn_x": "center",
+	"spawn_y": "center",
+	"count": 24,
+	"speed": 240.0
+  },
+  {
+	"time": 32.5,
+	"type": "end",
+	"delay": 1.2
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+	"time": 0.0,
+	"type": "loop",
+	"attack": "aimed",
+	"delay": 0.3,
+	"loop_duration": -1.0,
+	"start_x": "random",
+	"start_y": "random",
+	"speed": 200
+  }
+]

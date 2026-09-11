@@ -1,0 +1,39 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="VF+ 0.5 dev"
+config/description="beta 0.3 made by Jewe"
+run/main_scene="uid://bv3rb1ota8bd1"
+config/features=PackedStringArray("4.6", "Mobile")
+config/icon="uid://ckl8c4te6ha2u"
+
+[autoload]
+
+Global="*uid://cvdvo3ou07nvc"
+MusicManager="*res://scripts/music_manager.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
+window/handheld/orientation=4
+
+[physics]
+
+common/physics_ticks_per_second=120
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_2d=1

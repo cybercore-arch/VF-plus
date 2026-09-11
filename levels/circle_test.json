@@ -1,0 +1,13 @@
+[
+  {
+	"time": 0.0,
+	"type": "loop",
+	"attack": "circle",
+	"delay": 0.3,
+	"loop_duration": -1.0,
+	"spawn_x": "random",
+	"spawn_y": "random",
+	"count": 10,
+	"speed": 200.0
+  }
+]
