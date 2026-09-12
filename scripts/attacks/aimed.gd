@@ -42,9 +42,7 @@ func get_pos_value(val, is_y: bool) -> float:
 				return screen_size.y / 2.0 if is_y else screen_size.x / 2.0
 			"random":
 				if is_y:
-					# только верхний или нижний край
 					return 0.0 if randf() > 0.5 else screen_size.y
 				else:
-					# вся ширина/высота экрана по краю
 					return randf_range(0.0, screen_size.x)
 	return 0.0

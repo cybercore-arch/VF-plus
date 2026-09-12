@@ -3,13 +3,11 @@ extends Node
 var current_level_file: String = "circle_test.json"
 var current_level_path: String = ""
 
-# Папка для кастомных уровней (.json)
 func get_custom_levels_dir() -> String:
 	var path: String = ""
 	if OS.has_feature("editor"):
 		path = ProjectSettings.globalize_path("res://levels/")
 	elif OS.has_feature("android"):
-		# На Android создаем папку в общедоступных Документах: Documents/VF+/levels/
 		var doc_dir = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS)
 		if doc_dir != "" and doc_dir != null:
 			path = doc_dir.path_join("VF+").path_join("levels") + "/"
@@ -22,7 +20,6 @@ func get_custom_levels_dir() -> String:
 		DirAccess.make_dir_recursive_absolute(path)
 	return path
 
-# Папка для кастомных скриптов атак (.gd)
 func get_custom_patterns_dir() -> String:
 	var path: String = ""
 	if OS.has_feature("editor"):

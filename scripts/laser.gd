@@ -7,10 +7,7 @@ extends Node2D
 var _origin: Vector2
 var _dir: Vector2
 
-# Толщина лазера при активации (задаётся из паттерна)
 var target_width: float = 8.0
-# Радиус поражения будет вычислен автоматически как (радиус_игрока + половина ширины лазера)
-# Можно задать вручную через эту переменную (если >0, то используется она)
 var custom_hit_radius: float = 0.0
 
 func setup(origin: Vector2, dir: Vector2):
@@ -42,29 +39,23 @@ func activate(duration: float):
 	var tween = create_tween()
 	tween.tween_property(visual_line, "width", target_width, 0.1).set_trans(Tween.TRANS_CUBIC)
 
-	# Получаем радиус игрока
 	var player = get_tree().get_first_node_in_group("player")
-	var player_radius = 5.0  # значение по умолчанию, если не удастся определить
+	var player_radius = 5.0
 	if player and is_instance_valid(player):
-		# Пытаемся найти CollisionShape2D у игрока
 		for child in player.get_children():
 			if child is CollisionShape2D and child.shape is CircleShape2D:
 				player_radius = child.shape.radius
 				break
 			elif child is CollisionShape2D and child.shape is RectangleShape2D:
-				# Для прямоугольника берём половину диагонали или половину ширины/высоты
 				var rect = child.shape.size
 				player_radius = max(rect.x, rect.y) / 2.0
 				break
-		# Если не нашли, оставляем 5.0 (можно подогнать под свой спрайт)
 
-	# Вычисляем радиус поражения: половина ширины лазера + радиус игрока
 	var hit_radius = target_width / 2.0 + player_radius
-	# Если задан custom_hit_radius, используем его вместо вычисленного
 	if custom_hit_radius > 0.0:
 		hit_radius = custom_hit_radius
 
-	print("Лазер: ширина=", target_width, ", радиус игрока=", player_radius, ", радиус поражения=", hit_radius)
+	
 
 	var screen_size = get_viewport().get_visible_rect().size
 	var prev_pos = player.global_position if (player and is_instance_valid(player)) else screen_size / 2

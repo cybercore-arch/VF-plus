@@ -6,7 +6,6 @@ var time_elapsed: float = 0.0
 var timeline: Array = []
 var is_ended: bool = false
 
-# Кэш динамически загруженных скриптов атак
 var dynamic_attack_nodes: Dictionary = {}
 
 func _ready() -> void:
@@ -31,40 +30,36 @@ func _process(delta: float) -> void:
 		if time_elapsed >= event.get("time", 0.0):
 			var attack_type = str(event.get("type", ""))
 			
-			# 1. ОБРАБОТКА МУЗЫКИ: "type": "music"
 			if attack_type == "music":
-				print("PatternManager: запускаем музыку из JSON -> ", event)
+				print("", event)
 				var mm = get_node_or_null("/root/MusicManager")
 				if mm:
 					mm.handle_music_event(event)
 				elif Engine.has_singleton("MusicManager"):
 					MusicManager.handle_music_event(event)
 				else:
-					print("ОШИБКА: Автозагрузка 'MusicManager' не найдена! Проверь Настройки проекта -> Автозагрузка")
+					print("")
 				timeline.remove_at(i)
 				continue
 			
-			# 2. ОБРАБОТКА КОНЦА УРОВНЯ: "type": "end"
 			if attack_type == "end":
 				trigger_level_end(event)
 				timeline.remove_at(i)
 				return
 				
-			# 3. СТАНДАРТНЫЕ АТАКИ
 			var attack_node = get_attack_node(attack_type)
 			if attack_node and attack_node.has_method("execute"):
 				attack_node.execute(event)
 			else:
-				print("Ошибка: Модуль атаки '", attack_type, "' не найден!")
+				print("Ошибка: Модуль атаки '", attack_type, "' не найден")
 				
 			timeline.remove_at(i)
 
 func trigger_level_end(event: Dictionary) -> void:
 	is_ended = true
 	var delay = float(event.get("delay", 1.0))
-	print("Событие 'end' сработало! Задержка перед победой: ", delay, " сек.")
+	print("end")
 	
-	# Плавно приглушаем музыку к концу уровня
 	var mm = get_node_or_null("/root/MusicManager")
 	if mm:
 		mm.stop_song(delay if delay > 0.0 else 0.5)
@@ -95,7 +90,7 @@ func get_attack_node(attack_type: String) -> Node:
 			
 		add_child(node)
 		dynamic_attack_nodes[attack_type] = node
-		print("Динамический паттерн '", attack_type, "' успешно подключен!")
+		print("Динамический паттерн '", attack_type, "' успешно подключен")
 		return node
 		
 	return null
@@ -151,9 +146,9 @@ func load_timeline_from_file(file_path: String) -> void:
 				var data = json.get_data()
 				if data is Array:
 					timeline = data
-					print("Таймлайн загружен! Всего событий: ", timeline.size(), " (из: ", file_path, ")")
+					print("Таймлайн загружен. Всего событий: ", timeline.size(), " (из: ", file_path, ")")
 				else:
-					print("Ошибка формата: ожидался массив объектов JSON")
+					print("Ошибка формата")
 			else:
 				print("Ошибка парсинга JSON: ", json.get_error_message())
 	else:

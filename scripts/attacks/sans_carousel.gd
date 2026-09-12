@@ -3,19 +3,18 @@ extends Node
 const LaserScene = preload("res://scenes/laser.tscn")
 
 func execute(event: Dictionary) -> void:
-	# Параметры круговой карусели Санса
 	var center_x_raw = event.get("center_x", "center")
 	var center_y_raw = event.get("center_y", "center")
 	var radius = event.get("radius", 260.0)
-	var count = event.get("count", 18) # Сколько всего выстрелов в карусели
-	var step_delay = event.get("step_delay", 0.18) # Интервал между залпами (скорость вращения)
-	var warn_dur = event.get("warn_duration", 0.6) # Время красной линии-предупреждения
-	var laser_dur = event.get("laser_duration", 0.45) # Длительность вспышки луча
+	var count = event.get("count", 18)
+	var step_delay = event.get("step_delay", 0.18)
+	var warn_dur = event.get("warn_duration", 0.6)
+	var laser_dur = event.get("laser_duration", 0.45)
 	var width = event.get("width", 7.0)
-	var clockwise = event.get("clockwise", true) # По часовой стрелке или против
+	var clockwise = event.get("clockwise", true)
 	var start_angle_deg = event.get("start_angle", 0.0)
-	var angle_step = event.get("angle_step", 20.0) # Шаг угла между соседними лучами
-	var target_offset = event.get("target_offset", 0.0) # Сдвиг точки прицела (касательная или ровно в центр)
+	var angle_step = event.get("angle_step", 20.0)
+	var target_offset = event.get("target_offset", 0.0)
 	
 	var screen_size = get_viewport().get_visible_rect().size
 	var center_x = screen_size.x / 2.0 if str(center_x_raw) == "center" else float(center_x_raw)
@@ -35,7 +34,6 @@ func run_carousel(center: Vector2, radius: float, count: int, step_delay: float,
 		var rad = deg_to_rad(current_angle)
 		var blaster_pos = center + Vector2(cos(rad), sin(rad)) * radius
 		
-		# Луч стреляет сквозь центр круга (как у Санса)
 		var target_point = center
 		if target_offset != 0.0:
 			var tangent = Vector2(-sin(rad), cos(rad)) * dir_mult

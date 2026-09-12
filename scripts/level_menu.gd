@@ -1,10 +1,5 @@
 extends Control
 
-# ==============================================================================
-# МИНИМАЛИСТИЧНОЕ МЕНЮ ВЫБОРА УРОВНЕЙ С РАДИАЛЬНЫМ ХАБОМ (GODOT 4)
-# Стилистика: Минимализм, нейтрально-серые тона, без неона, мягкие твины.
-# ==============================================================================
-
 var official_levels: Dictionary = {}
 var endless_levels: Dictionary = {}
 var custom_levels: Dictionary = {}
@@ -25,10 +20,8 @@ var list_vbox: VBoxContainer
 var custom_toolbar: HBoxContainer
 var current_category: String = ""
 
-# Радиус раскрытия радиальных кнопок
 const RADIAL_RADIUS: float = 190.0
 
-# Размеры элементов для точного центрирования (увеличенные)
 const CIRCLE_SIZE: Vector2 = Vector2(130, 130)
 const BUTTON_SIZE: Vector2 = Vector2(170, 50)
 
@@ -39,9 +32,6 @@ func _ready() -> void:
 	setup_radial_menu()
 	setup_list_view()
 
-# ------------------------------------------------------------------------------
-# 1. МИНИМАЛИСТИЧНЫЙ СЕРЫЙ ФОН
-# ------------------------------------------------------------------------------
 func setup_background() -> void:
 	bg_rect = ColorRect.new()
 	bg_rect.name = "Background"
@@ -49,29 +39,21 @@ func setup_background() -> void:
 	bg_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(bg_rect)
 
-# ------------------------------------------------------------------------------
-# 2. РАДИАЛЬНОЕ МЕНЮ (ЦЕНТРАЛЬНЫЙ ХАБ С ТОЧНЫМ ПОЗИЦИОНИРОВАНИЕМ)
-# ------------------------------------------------------------------------------
 func setup_radial_menu() -> void:
 	radial_container = Control.new()
 	radial_container.name = "RadialContainer"
 	radial_container.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(radial_container)
 	
-	# radial_hub закреплен точно по центру экрана (PRESET_CENTER).
-	# Точка (0, 0) внутри него — это ВСЕГДА точный центр экрана при любом разрешении!
 	radial_hub = Control.new()
 	radial_hub.name = "RadialHub"
 	radial_hub.set_anchors_preset(Control.PRESET_CENTER)
 	radial_container.add_child(radial_hub)
 	
-	# Контейнер для соединительных линий (под кнопками)
 	lines_container = Control.new()
 	lines_container.name = "LinesContainer"
 	radial_hub.add_child(lines_container)
 	
-	# 3 радиальные кнопки категорий
-	# Углы: -90° (вверх), 35° (вправо-вниз), 145° (влево-вниз)
 	var categories = [
 		{"id": "official", "title": "Official Levels", "angle_deg": -90.0},
 		{"id": "endless",  "title": "Endless Levels",  "angle_deg": 35.0},
@@ -79,11 +61,10 @@ func setup_radial_menu() -> void:
 	]
 	
 	for item in categories:
-		# Создаем соединительную линию от центра (0,0) до кнопки
 		var line = Line2D.new()
 		line.name = "Line_" + item["id"]
 		line.width = 2.0
-		line.default_color = Color(0.32, 0.35, 0.40, 0.8) # минималистичный серый тон
+		line.default_color = Color(0.32, 0.35, 0.40, 0.8)
 		line.add_point(Vector2.ZERO)
 		line.add_point(Vector2.ZERO)
 		line.modulate.a = 0.0
@@ -96,7 +77,6 @@ func setup_radial_menu() -> void:
 		category_buttons.append(btn)
 		radial_hub.add_child(btn)
 		
-	# Центральный кружок (START) поверх кнопок и линий
 	center_circle_btn = Button.new()
 	center_circle_btn.name = "CenterCircle"
 	center_circle_btn.text = "START"
@@ -162,7 +142,6 @@ func create_radial_item_button(title_text: String, cat_id: String, angle_deg: fl
 	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))
 	btn.add_theme_font_size_override("font_size", 15)
 	
-	# Исходное положение — внутри центрального кружка
 	btn.position = -BUTTON_SIZE / 2.0
 	btn.modulate.a = 0.0
 	btn.visible = false
@@ -193,7 +172,6 @@ func _on_center_circle_unhover() -> void:
 	var tw = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.tween_property(center_circle_btn, "scale", Vector2(1.0, 1.0), 0.15)
 
-# Плавное радиальное раскрытие и мягкое медленное закрытие
 func toggle_radial_menu() -> void:
 	is_radial_open = !is_radial_open
 	
@@ -211,29 +189,24 @@ func toggle_radial_menu() -> void:
 			var offset = dir * RADIAL_RADIUS
 			var target_pos = offset - (BUTTON_SIZE / 2.0)
 			
-			# Анимация вылета кнопки
 			tw.tween_property(btn, "position", target_pos, 0.35)
 			tw.tween_property(btn, "modulate:a", 1.0, 0.3)
 			
-			# Анимация выдвижения соединительной линии
 			tw.tween_method(func(p: Vector2):
 				line.set_point_position(1, p)
 			, Vector2.ZERO, offset, 0.35)
 			tw.tween_property(line, "modulate:a", 1.0, 0.3)
 	else:
 		center_circle_btn.text = "START"
-		# Более мягкая, плавная и неторопливая анимация закрытия (TRANS_SINE, 0.42 сек)
 		var tw = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		for i in range(category_buttons.size()):
 			var btn = category_buttons[i]
 			var line = connector_lines[i]
 			var center_pos = -BUTTON_SIZE / 2.0
 			
-			# Возврат кнопки в центр
 			tw.tween_property(btn, "position", center_pos, 0.42)
 			tw.tween_property(btn, "modulate:a", 0.0, 0.38)
 			
-			# Возврат линии в центр
 			var cur_p = line.get_point_position(1)
 			tw.tween_method(func(p: Vector2):
 				line.set_point_position(1, p)
@@ -247,9 +220,6 @@ func toggle_radial_menu() -> void:
 					connector_lines[i].visible = false
 		)
 
-# ------------------------------------------------------------------------------
-# 3. ЭКРАН СО СПИСКОМ УРОВНЕЙ
-# ------------------------------------------------------------------------------
 func setup_list_view() -> void:
 	list_view_container = Control.new()
 	list_view_container.name = "ListViewContainer"
@@ -324,13 +294,11 @@ func setup_list_view() -> void:
 func _on_category_selected(cat_id: String) -> void:
 	current_category = cat_id
 	
-	# Запускаем анимацию закрытия radial меню (сворачивание кнопок и линий к центру)
 	if is_radial_open:
 		toggle_radial_menu()
 		
-	# Плавно уводим контейнер и переходим к списку после красивого сжатия
 	var tw = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tw.tween_interval(0.18) # даем анимации close начать стягиваться к центру
+	tw.tween_interval(0.18)
 	tw.tween_property(radial_container, "modulate:a", 0.0, 0.25)
 	tw.tween_property(radial_container, "scale", Vector2(0.92, 0.92), 0.25)
 	tw.tween_callback(func():
@@ -414,28 +382,23 @@ func render_current_category_levels() -> void:
 		var btn = create_level_row_button(file_name, full_path)
 		list_vbox.add_child(btn)
 
-# Очистка имени от технических тегов (OFFIC, OFFICIAL, ENDLESS) и расширения .json
 func format_level_display_name(raw_name: String) -> String:
 	var clean = raw_name.trim_suffix(".json")
 	
-	# Скрываем префиксы и суффиксы OFFIC / OFFICIAL (без учета регистра)
 	var reg_offic = RegEx.new()
 	reg_offic.compile("(?i)(offic(ial)?)[_\\-\\s]*")
 	clean = reg_offic.sub(clean, "", true)
 	
-	# Скрываем префиксы и суффиксы ENDLESS (без учета регистра)
 	var reg_endless = RegEx.new()
 	reg_endless.compile("(?i)(endless)[_\\-\\s]*")
 	clean = reg_endless.sub(clean, "", true)
 	
-	# Очищаем возможные оставшиеся подчеркивания, тире и пробелы по краям
 	clean = clean.strip_edges()
 	while clean.begins_with("_") or clean.begins_with("-"):
 		clean = clean.substr(1).strip_edges()
 	while clean.ends_with("_") or clean.ends_with("-"):
 		clean = clean.substr(0, clean.length() - 1).strip_edges()
 		
-	# Если имя оказалось пустым после удаления тега, возвращаем исходное без .json
 	if clean.is_empty():
 		return raw_name.trim_suffix(".json")
 	return clean
@@ -473,9 +436,6 @@ func create_level_row_button(file_name: String, full_path: String) -> Button:
 	btn.pressed.connect(func(): _on_level_selected(file_name, full_path))
 	return btn
 
-# ------------------------------------------------------------------------------
-# 4. СКАНИРОВАНИЕ И РАСПРЕДЕЛЕНИЕ ПО ПРАВИЛАМ
-# ------------------------------------------------------------------------------
 func scan_all_levels() -> void:
 	official_levels.clear()
 	endless_levels.clear()
@@ -515,9 +475,6 @@ func scan_folder(dir_path: String, out_dict: Dictionary) -> void:
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
-# ------------------------------------------------------------------------------
-# 5. ВЫБОР УРОВНЯ И УВЕДОМЛЕНИЯ
-# ------------------------------------------------------------------------------
 func _on_level_selected(file_name: String, full_path: String) -> void:
 	Global.current_level_file = file_name
 	Global.current_level_path = full_path

@@ -1,26 +1,20 @@
 extends Node
 
-# Глобальный менеджер музыки для VF+ (Поддержка встроенных треков, локальных файлов и Newgrounds CDN)
-
 var audio_player: AudioStreamPlayer
 var http_request: HTTPRequest
 
-# Текущее состояние
 var current_song_id: Variant = null
 var current_song_title: String = "no music"
 var current_playback_position: float = 0.0
 var default_volume_db: float = 0.0
 
-# Статус для HUD
 var is_downloading: bool = false
 var download_target_id: int = 0
 var download_percent: int = 0
 var hud_status_text: String = "Now playing: no music"
 
-# Попытки и шлюзы
 var api_attempt: int = 0
 
-# Кэш уже загруженных стримов
 var stream_cache: Dictionary = {}
 
 func _ready() -> void:
@@ -37,7 +31,6 @@ func _ready() -> void:
 	ensure_music_directories()
 
 func _process(_delta: float) -> void:
-	# Отслеживаем процент скачивания на лету
 	if is_downloading and http_request:
 		var body_size = http_request.get_body_size()
 		var downloaded = http_request.get_downloaded_bytes()
@@ -69,9 +62,6 @@ func ensure_music_directories() -> void:
 	if not DirAccess.dir_exists_absolute(user_cache):
 		DirAccess.make_dir_recursive_absolute(user_cache)
 
-# ------------------------------------------------------------------------------
-# СБРОС СОСТОЯНИЯ (при выходе в меню / смене уровня)
-# ------------------------------------------------------------------------------
 func reset_state() -> void:
 	stop_song()
 	current_song_id = null
@@ -81,9 +71,6 @@ func reset_state() -> void:
 	if http_request:
 		http_request.cancel_request()
 
-# ------------------------------------------------------------------------------
-# ОБРАБОТКА JSON
-# ------------------------------------------------------------------------------
 func handle_music_event(event: Dictionary) -> void:
 	var action = str(event.get("action", "play")).to_lower()
 	match action:
@@ -100,9 +87,6 @@ func handle_music_event(event: Dictionary) -> void:
 		"stop":
 			stop_song()
 
-# ------------------------------------------------------------------------------
-# УПРАВЛЕНИЕ ТРЕКОМ
-# ------------------------------------------------------------------------------
 func play_song(song_id: Variant, start_offset: float = 0.0, volume_db: float = 0.0, fade_in: float = 0.0) -> void:
 	var clean_id: Variant = song_id
 	if typeof(song_id) == TYPE_FLOAT:
@@ -111,7 +95,6 @@ func play_song(song_id: Variant, start_offset: float = 0.0, volume_db: float = 0
 	current_song_id = clean_id
 	default_volume_db = volume_db
 	
-	# Сразу обновляем статус, чтобы старое имя не висело в HUD
 	current_song_title = str(clean_id)
 	hud_status_text = "Now playing: " + current_song_title
 	
@@ -122,7 +105,7 @@ func play_song(song_id: Variant, start_offset: float = 0.0, volume_db: float = 0
 			download_from_newgrounds(int(clean_id), start_offset, volume_db)
 		else:
 			hud_status_text = "Now playing: no music"
-			print("MusicManager: трек с ID '", clean_id, "' не найден!")
+			print("MusicManager: трек с ID '", clean_id, "' не найден")
 		return
 		
 	audio_player.stream = stream
@@ -131,7 +114,7 @@ func play_song(song_id: Variant, start_offset: float = 0.0, volume_db: float = 0
 	audio_player.play(start_offset)
 	
 	hud_status_text = "Now playing: " + current_song_title
-	print("MusicManager: заиграл трек -> ", current_song_title)
+	print("MusicManager: -> ", current_song_title)
 	
 	if fade_in > 0.0:
 		var tw = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -164,9 +147,6 @@ func stop_song(_fade_out: float = 0.0) -> void:
 		audio_player.stream_paused = false
 	current_playback_position = 0.0
 
-# ------------------------------------------------------------------------------
-# ПОИСК ФАЙЛОВ
-# ------------------------------------------------------------------------------
 func get_or_load_stream(song_id: Variant) -> AudioStream:
 	var clean_id: Variant = song_id
 	if typeof(song_id) == TYPE_FLOAT:
@@ -234,7 +214,7 @@ func find_song_file(song_id: Variant) -> String:
 			f_name = d.get_next()
 		d.list_dir_end()
 		
-	print("MusicManager: файл для ID ", clean_id, " не найден ни в одной папке!")
+	
 	return ""
 
 func load_audio_from_disk(path: String) -> AudioStream:
@@ -247,7 +227,7 @@ func load_audio_from_disk(path: String) -> AudioStream:
 	file.close()
 	
 	if bytes.size() < 100:
-		print("Файл пустой: ", path)
+		
 		DirAccess.remove_absolute(path)
 		return null
 		
@@ -260,9 +240,6 @@ func load_audio_from_disk(path: String) -> AudioStream:
 		
 	return null
 
-# ------------------------------------------------------------------------------
-# СКАЧИВАНИЕ С NEWGROUNDS ЧЕРЕЗ МНОГОУРОВНЕВЫЙ ШЛЮЗ
-# ------------------------------------------------------------------------------
 func download_from_newgrounds(id: int, _start_offset: float, _volume_db: float) -> void:
 	if is_downloading:
 		return
@@ -271,7 +248,7 @@ func download_from_newgrounds(id: int, _start_offset: float, _volume_db: float) 
 	download_percent = 0
 	api_attempt = 1
 	hud_status_text = "(0%) Resolving " + str(id) + "..."
-	print("Запрос трека ID ", id, " к шлюзу API (попытка 1)...")
+	
 	
 	var url = "https://geometrydash.io/api/song/" + str(id)
 	var headers = PackedStringArray(["User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)"])
@@ -281,7 +258,7 @@ func download_from_newgrounds(id: int, _start_offset: float, _volume_db: float) 
 
 func try_next_gateway() -> void:
 	api_attempt += 1
-	print("Пробуем резервный шлюз (попытка ", api_attempt, ")...")
+	
 	
 	if api_attempt == 2:
 		var url = "https://api.allorigins.win/raw?url=" + ("https://gdbrowser.com/api/song/" + str(download_target_id)).uri_encode()
@@ -299,7 +276,7 @@ func try_next_gateway() -> void:
 		is_downloading = false
 
 func _on_http_download_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	print("HTTP ответ: ", response_code, " | Размер: ", body.size(), " байт")
+	
 	
 	if body.size() > 30000 and (response_code == 200 or response_code == 206):
 		var save_path = "user://music_cache/ng_" + str(download_target_id) + ".mp3"
@@ -307,7 +284,7 @@ func _on_http_download_completed(result: int, response_code: int, headers: Packe
 		if f:
 			f.store_buffer(body)
 			f.close()
-			print("Трек ", download_target_id, " успешно сохранен в кэш! Размер: ", body.size() / 1024, " КБ")
+			
 			is_downloading = false
 			hud_status_text = "Downloaded. Restart level (R)"
 			
@@ -324,7 +301,7 @@ func _on_http_download_completed(result: int, response_code: int, headers: Packe
 		return
 		
 	var text = body.get_string_from_utf8().strip_edges()
-	print("Ответ API: ", text.left(200))
+	
 	
 	var json = JSON.new()
 	if json.parse(text) == OK:
@@ -340,7 +317,7 @@ func _on_http_download_completed(result: int, response_code: int, headers: Packe
 				
 			if link != "":
 				link = link.uri_decode().replace("\\/", "/")
-				print("Получена прямая ссылка на MP3: ", link)
+				print("Получено: ", link)
 				hud_status_text = "Downloading audio..."
 				http_request.request(link, PackedStringArray(["User-Agent: Mozilla/5.0"]))
 				return

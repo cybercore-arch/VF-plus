@@ -8,8 +8,6 @@ func execute(event: Dictionary):
 	run_random_mode(delay, duration)
 
 func run_random_mode(delay: float, duration: float):
-	# Сканируем папки и подключаем все внешние кастомные атаки,
-	# чтобы режим "All Stars" реально включал абсолютно все атаки (и встроенные, и кастомные)
 	preload_all_available_attacks()
 	
 	var start_time = Time.get_ticks_msec() / 1000.0
@@ -19,7 +17,6 @@ func run_random_mode(delay: float, duration: float):
 			
 		var pool: Array[Node] = []
 		for child in pattern_manager.get_children():
-			# Исключаем служебные узлы: сам random и цикл loop
 			if child.name != "random" and child.name != "loop" and child.has_method("execute"):
 				pool.append(child)
 				
@@ -30,8 +27,6 @@ func run_random_mode(delay: float, duration: float):
 		var random_node = pool[randi() % pool.size()]
 		var type_name = str(random_node.name)
 		
-		# Генерируем параметры:
-		# Если у скрипта атаки есть свой метод get_random_params(), используем его!
 		var random_event: Dictionary
 		if random_node.has_method("get_random_params"):
 			random_event = random_node.get_random_params()
@@ -43,7 +38,6 @@ func run_random_mode(delay: float, duration: float):
 		
 		await get_tree().create_timer(delay).timeout
 
-# Автоматически регистрирует все .gd скрипты из встроенных и кастомных папок
 func preload_all_available_attacks() -> void:
 	if not pattern_manager or not pattern_manager.has_method("get_attack_node"):
 		return
@@ -127,7 +121,6 @@ func generate_random_params(type: String) -> Dictionary:
 				data["only_horizontal"] = false
 				
 		_:
-			# Умные параметры по умолчанию для ЛЮБЫХ неизвестных кастомных атак
 			data["count"] = randi_range(8, 16)
 			data["speed"] = randf_range(180.0, 260.0)
 			data["spawn_x"] = "center" if randf() > 0.5 else randf_range(60.0, screen_size.x - 60.0)

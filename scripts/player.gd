@@ -33,6 +33,6 @@ func die() -> void:
 		return
 		
 	is_alive = false
-	print("Player died!")
+	
 	modulate.a = 0.5
 	died.emit()

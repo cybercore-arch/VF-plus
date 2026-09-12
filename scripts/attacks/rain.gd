@@ -3,7 +3,6 @@ extends Node
 @export var bullet_scene: PackedScene = preload("res://scenes/bullet.tscn")
 
 func execute(event: Dictionary):
-	# 1. Извлекаем параметры из JSON
 	var direction_side = event.get("direction", "top") 
 	var count = event.get("count", 10)
 	var base_speed = event.get("speed", 300.0)

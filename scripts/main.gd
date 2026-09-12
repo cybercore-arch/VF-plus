@@ -41,10 +41,8 @@ var victory_box: Control
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	# Твой фирменный цвет фона
 	RenderingServer.set_default_clear_color(Color("2e3036ff"))
 	
-	# Сбрасываем старый статус музыки от прошлого уровня
 	var mm = get_node_or_null("/root/MusicManager")
 	if mm and mm.has_method("reset_state"):
 		mm.reset_state()
@@ -120,8 +118,6 @@ func _input(event: InputEvent) -> void:
 		var target = (saved_time_scale if is_game_paused else Engine.time_scale) + 0.25
 		set_game_speed(clamp(target, 0.1, 4.0))
 
-# --- Touch / Mouse HUD Bar ---
-
 func setup_touch_hud_controls() -> void:
 	var hud_layer = CanvasLayer.new()
 	hud_layer.layer = 50
@@ -148,8 +144,6 @@ func setup_touch_hud_controls() -> void:
 	touch_dev_button.custom_minimum_size = Vector2(80, 38)
 	touch_dev_button.pressed.connect(toggle_dev_menu)
 	bar.add_child(touch_dev_button)
-
-# --- Пауза ---
 
 func setup_pause_overlay() -> void:
 	pause_overlay = CanvasLayer.new()
@@ -213,7 +207,6 @@ func toggle_pause() -> void:
 		if touch_pause_button:
 			touch_pause_button.text = "RESUME"
 			
-		# СТАВИМ МУЗЫКУ НА ПАУЗУ
 		var mm = get_node_or_null("/root/MusicManager")
 		if mm:
 			mm.pause_song()
@@ -226,15 +219,12 @@ func toggle_pause() -> void:
 		if touch_pause_button:
 			touch_pause_button.text = "PAUSE"
 			
-		# ВОЗОБНОВЛЯЕМ МУЗЫКУ
 		var mm = get_node_or_null("/root/MusicManager")
 		if mm:
 			mm.resume_song()
 			
 	if is_dev_menu_open:
 		update_dev_stats()
-
-# --- Dev Меню ---
 
 func setup_dev_menu() -> void:
 	dev_canvas = CanvasLayer.new()
@@ -388,8 +378,6 @@ func update_dev_stats() -> void:
 	bullets_count_label.text = "Bullets on screen: " + str(get_tree().get_nodes_in_group("bullet").size())
 	fps_label.text = "FPS: " + str(Engine.get_frames_per_second())
 
-# --- Экран смерти (Game Over) ---
-
 func game_over() -> void:
 	if is_game_over or is_victory:
 		return
@@ -404,7 +392,6 @@ func game_over() -> void:
 	if pattern_manager:
 		pattern_manager.set_process(false)
 		
-	# Глушим музыку при смерти игрока
 	var mm = get_node_or_null("/root/MusicManager")
 	if mm:
 		mm.stop_song()
@@ -468,8 +455,6 @@ func show_game_over_screen() -> void:
 	tw.tween_property(game_over_dim, "modulate:a", 1.0, 0.3)
 	tw.tween_property(box, "modulate:a", 1.0, 0.3)
 	tw.tween_property(box, "scale", Vector2.ONE, 0.3)
-
-# --- Экран ПОБЕДЫ (Victory / Level Complete) ---
 
 func on_level_completed() -> void:
 	if is_game_over or is_victory:
@@ -537,8 +522,6 @@ func on_level_completed() -> void:
 	tw.tween_property(dim, "modulate:a", 1.0, 0.35)
 	tw.tween_property(box, "modulate:a", 1.0, 0.35)
 	tw.tween_property(box, "scale", Vector2.ONE, 0.35)
-
-# --- Рестарт и выход (со сбросом музыки) ---
 
 func _restart_level() -> void:
 	Engine.time_scale = 1.0

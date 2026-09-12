@@ -9,7 +9,6 @@ func execute(event: Dictionary):
 
 	var screen_size = get_viewport().get_visible_rect().size
 
-	# Генерируем позиции один раз
 	var positions = []
 	for i in range(count):
 		positions.append(Vector2(
@@ -17,13 +16,11 @@ func execute(event: Dictionary):
 			randf_range(50.0, screen_size.y - 50.0)
 		))
 
-	# Показываем крестики на тех же позициях
 	for pos in positions:
 		show_warning(pos)
 
 	await get_tree().create_timer(0.5).timeout
 
-	# Спавним мины на тех же позициях
 	for pos in positions:
 		spawn_mine(pos, shards_count, base_speed)
 
